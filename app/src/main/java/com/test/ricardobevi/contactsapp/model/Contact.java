@@ -2,7 +2,9 @@ package com.test.ricardobevi.contactsapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -19,7 +21,7 @@ public class Contact implements Parcelable {
     private String detailsURL;
     private ContactDetails contactDetails;
     private String smallImageURL;
-    private Date birthdate;
+    private Date birthDate;
     private Phone phone;
 
 
@@ -27,6 +29,20 @@ public class Contact implements Parcelable {
     public Contact(){
 
     }
+
+    public Contact(JSONObject jsonObject) throws JSONException {
+
+        name = jsonObject.getString("name");
+        employeeId = jsonObject.getInt("employeeId");
+        company = jsonObject.getString("company");
+        detailsURL = jsonObject.getString("detailsURL");
+        smallImageURL = jsonObject.getString("smallImageURL");
+        phone = new Phone(jsonObject.getJSONObject("phone"));
+
+        Long rawDate = jsonObject.getLong("birthdate");
+        birthDate = new Date(rawDate * 1000);
+    }
+
 
 
     protected Contact(Parcel in) {
@@ -40,7 +56,7 @@ public class Contact implements Parcelable {
         detailsURL = in.readString();
         contactDetails = in.readParcelable(ContactDetails.class.getClassLoader());
         smallImageURL = in.readString();
-        birthdate = (Date) in.readSerializable();
+        birthDate = (Date) in.readSerializable();
         phone = in.readParcelable(Phone.class.getClassLoader());
     }
 
@@ -54,7 +70,7 @@ public class Contact implements Parcelable {
         out.writeString(detailsURL);
         out.writeParcelable(contactDetails, flags);
         out.writeString(smallImageURL);
-        out.writeSerializable(birthdate);
+        out.writeSerializable(birthDate);
         out.writeParcelable(phone,flags);
 
     }
@@ -78,4 +94,50 @@ public class Contact implements Parcelable {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "name='" + name + '\'' +
+                ", employeeId=" + employeeId +
+                ", company='" + company + '\'' +
+                ", detailsURL='" + detailsURL + '\'' +
+                ", contactDetails=" + contactDetails +
+                ", smallImageURL='" + smallImageURL + '\'' +
+                ", birthDate=" + birthDate +
+                ", phone=" + phone +
+                '}';
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getDetailsURL() {
+        return detailsURL;
+    }
+
+    public ContactDetails getContactDetails() {
+        return contactDetails;
+    }
+
+    public String getSmallImageURL() {
+        return smallImageURL;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public Phone getPhone() {
+        return phone;
+    }
 }

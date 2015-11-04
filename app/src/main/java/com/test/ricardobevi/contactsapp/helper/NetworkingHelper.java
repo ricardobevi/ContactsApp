@@ -12,16 +12,16 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by ric on 01/11/15.
  */
-public class NetworkingHelperSingleton {
+public class NetworkingHelper {
 
-    private static NetworkingHelperSingleton sInstance;
+    private static NetworkingHelper sInstance;
     private static Context mContext;
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
 
-    private NetworkingHelperSingleton(Context context) {
+    private NetworkingHelper(Context context) {
         mContext = context;
         mRequestQueue = getRequestQueue();
 
@@ -42,9 +42,9 @@ public class NetworkingHelperSingleton {
                 });
     }
 
-    public static synchronized NetworkingHelperSingleton getInstance(Context context) {
+    public static synchronized NetworkingHelper getInstance(Context context) {
         if (sInstance == null) {
-            sInstance = new NetworkingHelperSingleton(context);
+            sInstance = new NetworkingHelper(context);
         }
         return sInstance;
     }
